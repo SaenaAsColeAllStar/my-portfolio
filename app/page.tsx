@@ -16,6 +16,10 @@ function isNavigationView(value: string | null): value is NavigationView {
   return Boolean(value && (navigationViews as readonly string[]).includes(value));
 }
 
+function isNavigationView(value: string | null): value is NavigationView {
+  return Boolean(value && (navigationViews as readonly string[]).includes(value));
+}
+
 // Standard loading component for Suspense
 function Loader() {
   return (

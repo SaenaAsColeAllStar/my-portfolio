@@ -10,7 +10,7 @@ import {
   Brain, 
   Workflow,
 } from "lucide-react";
-import { getProjectArchitecture, type ArchitectureNode, type ProjectSlug } from "@/features/projects/domain/project-catalog";
+import { getProjectArchitecture, type ArchitectureNode } from "@/features/projects/domain/project-catalog";
 
 interface SVGArchitectureViewerProps {
   projectSlug: ProjectSlug;

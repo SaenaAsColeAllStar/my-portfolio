@@ -11,12 +11,6 @@ const projectIconMap = {
   shield: ShieldCheck,
 } satisfies Record<ProjectSummary["iconKey"], React.ComponentType<{ className?: string }>>;
 
-const projectAccentClassMap = {
-  sapphire: "text-[#0070F3] bg-[#0070F3]/5 border-[#0070F3]/10 hover:shadow-[#0070F3]/5",
-  amber: "text-amber-600 bg-amber-500/5 border-amber-500/10 hover:shadow-amber-500/5",
-  violet: "text-purple-600 bg-purple-500/5 border-purple-500/10 hover:shadow-purple-500/5",
-} satisfies Record<ProjectSummary["accent"], string>;
-
 interface ProjectShowcaseGridProps {
   onProjectSelect?: (slug: ProjectSlug) => void;
 }
@@ -67,7 +61,6 @@ export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcase
       >
         {projectSummaries.map((project) => {
           const IconComponent = projectIconMap[project.iconKey];
-          const accentClasses = projectAccentClassMap[project.accent];
           return (
             <motion.div
               key={project.id}

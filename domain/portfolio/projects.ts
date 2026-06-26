@@ -1,3 +1,6 @@
+import { Cpu, Network, ShieldCheck } from "lucide-react";
+import type { ComponentType } from "react";
+
 export type ProjectSlug =
   | "distributed-cognitive-router"
   | "global-event-log-sync"
@@ -14,7 +17,7 @@ export interface ProjectSummary {
   latencyMetric: string;
   scaleMetric: string;
   techStack: string[];
-  iconKey: "cpu" | "network" | "shield";
+  icon: ComponentType<{ className?: string }>;
   accentColor: string;
 }
 
@@ -53,7 +56,7 @@ export const projectSummaries: ProjectSummary[] = [
     latencyMetric: "38ms p95",
     scaleMetric: "92% compute saved",
     techStack: ["Cloudflare KV", "Gemini API", "Edge Isolates"],
-    iconKey: "cpu",
+    icon: Cpu,
     accentColor: "text-[#0070F3] bg-[#0070F3]/5 border-[#0070F3]/10 hover:shadow-[#0070F3]/5",
   },
   {
@@ -66,7 +69,7 @@ export const projectSummaries: ProjectSummary[] = [
     latencyMetric: "12ms Write Consolidation",
     scaleMetric: "1.2M logs/sec Peak",
     techStack: ["Cloudflare D1", "Drizzle ORM", "TypeScript"],
-    iconKey: "network",
+    icon: Network,
     accentColor: "text-amber-600 bg-amber-500/5 border-amber-500/10 hover:shadow-amber-500/5",
   },
   {
@@ -79,7 +82,7 @@ export const projectSummaries: ProjectSummary[] = [
     latencyMetric: "1.8ms Overhead",
     scaleMetric: "99.99% accuracy",
     techStack: ["Rust WASM", "Cloudflare Workers", "RegEx Engines"],
-    iconKey: "shield",
+    icon: ShieldCheck,
     accentColor: "text-purple-600 bg-purple-500/5 border-purple-500/10 hover:shadow-purple-500/5",
   },
 ];
