@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  audit-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Compile Static Documentation
+        run: node scripts/compile-docs.js
+
+      - name: Run ESLint Audit
+        run: npm run lint
+
+      - name: Run TypeScript Type-Check
+        run: npx tsc --noEmit
+
+      - name: Build Cloudflare Pages Assets
+        run: npm run build:worker
+
+      - name: Deploy to Cloudflare Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

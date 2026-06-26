@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
-import fs from "node:fs";
-import path from "node:path";
+import docsContextJson from "@/lib/docs-context.json";
+
+export const runtime = "edge";
 
 // Lazy-initialized GoogleGenAI SDK client
 let aiClient: GoogleGenAI | null = null;
@@ -24,37 +25,6 @@ function getAiClient() {
   return aiClient;
 }
 
-// Memory-cached documentation context to avoid redundant disk Reads
-let cachedDocsContext = "";
-
-function getDocsContext() {
-  if (cachedDocsContext) return cachedDocsContext;
-
-  try {
-    const docsDir = path.join(process.cwd(), "docs");
-    if (!fs.existsSync(docsDir)) {
-      return "No documentation directories found on server.";
-    }
-
-    const files = fs.readdirSync(docsDir);
-    let compiledContext = "";
-
-    for (const file of files) {
-      if (file.endsWith(".md")) {
-        const filePath = path.join(docsDir, file);
-        const fileContent = fs.readFileSync(filePath, "utf-8");
-        compiledContext += `\n\n--- DOCUMENT: ${file} ---\n${fileContent}\n`;
-      }
-    }
-
-    cachedDocsContext = compiledContext;
-    return cachedDocsContext;
-  } catch (error) {
-    console.error("Failed to compile documents context:", error);
-    return "Error reading documentation context from disk.";
-  }
-}
-
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
@@ -69,8 +39,8 @@ export async function POST(req: NextRequest) {
     // Initialize AI Client safely
     const ai = getAiClient();
 
-    // Compile dynamic context from the /docs files
-    const docsContext = getDocsContext();
+    // Consume the pre-compiled static context from the build bundle
+    const docsContext = docsContextJson.context;
 
     // Master System Instruction setting the direct, professional Systems Architect persona
     const systemInstruction = `You are Virtual Cole, the digital mind of Cole, a world-class AI and Systems Engineer.

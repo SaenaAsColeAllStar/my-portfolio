@@ -61,13 +61,26 @@ export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcase
       >
         {projectSummaries.map((project) => {
           const IconComponent = projectIconMap[project.iconKey];
+
+          // Keyboard interaction handler for screen reader accessibility
+          const handleKeyDown = (e: React.KeyboardEvent) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onProjectSelect?.(project.slug);
+            }
+          };
+
           return (
             <motion.div
               key={project.id}
               id={`project-card-${project.slug}`}
               variants={cardVariants}
               onClick={() => onProjectSelect?.(project.slug)}
-              className={`group relative bg-white border border-black/[0.06] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-black/[0.12] transition-all duration-300 flex flex-col justify-between min-h-[250px] cursor-pointer ${accentClasses}`}
+              onKeyDown={handleKeyDown}
+              tabIndex={0}
+              role="button"
+              aria-label={`Open case study and topology map for ${project.title}`}
+              className={`group relative bg-white border border-black/[0.06] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-black/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070F3] transition-all duration-300 flex flex-col justify-between min-h-[250px] cursor-pointer ${project.accentColor}`}
             >
               {/* Card top branding */}
               <div>

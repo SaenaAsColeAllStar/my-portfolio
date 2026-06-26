@@ -10,7 +10,7 @@ import {
   Brain, 
   Workflow,
 } from "lucide-react";
-import { getProjectArchitecture, type ArchitectureNode } from "@/features/projects/domain/project-catalog";
+import { getProjectArchitecture, type ArchitectureNode, type ProjectSlug } from "@/features/projects/domain/project-catalog";
 
 interface SVGArchitectureViewerProps {
   projectSlug: ProjectSlug;
@@ -28,6 +28,7 @@ const iconMap = {
 export default function SVGArchitectureViewer({ projectSlug }: SVGArchitectureViewerProps) {
   const [hoveredNode, setHoveredNode] = useState<ArchitectureNode | null>(null);
   const [activeNode, setActiveNode] = useState<ArchitectureNode | null>(null);
+  const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
 
   const data = getProjectArchitecture(projectSlug);
   const { nodes, links } = data;
@@ -143,11 +144,35 @@ export default function SVGArchitectureViewer({ projectSlug }: SVGArchitectureVi
               <g 
                 key={node.id}
                 id={`node-group-${node.id}`}
-                className="cursor-pointer"
+                className="cursor-pointer focus:outline-none"
                 onMouseEnter={() => setHoveredNode(node)}
                 onMouseLeave={() => setHoveredNode(null)}
+                onFocus={() => setFocusedNodeId(node.id)}
+                onBlur={() => setFocusedNodeId(null)}
                 onClick={() => setActiveNode(isActive ? null : node)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveNode(isActive ? null : node);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`System node: ${node.label}. ${node.description}`}
               >
+                {/* Visual accessibility focus indicator ring */}
+                {focusedNodeId === node.id && (
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r="24"
+                    fill="none"
+                    stroke="#0070F3"
+                    strokeWidth="2"
+                    strokeDasharray="3 3"
+                    className="animate-pulse"
+                  />
+                )}
                 {/* Microscopic radial pulse expansion (Sapphire blue glow) */}
                 <AnimatePresence>
                   {(isHovered || isActive) && (

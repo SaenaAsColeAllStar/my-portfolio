@@ -1,11 +1,11 @@
 {
   "name": "my-portfolio",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "build:worker": "opennextjs-cloudflare build",
+    "dev": "node scripts/compile-docs.js && next dev",
+    "build": "node scripts/compile-docs.js && next build",
+    "build:worker": "node scripts/compile-docs.js && opennextjs-cloudflare build",
     "start": "next start",
     "lint": "eslint .",
     "clean": "next clean",

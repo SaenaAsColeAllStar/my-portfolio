@@ -1,3 +1,10 @@
+/**
+ * @file page.tsx
+ * @description Master Page Orchestrator for Cole.dev.
+ * Manages core view transitions (dashboard, notebook, timeline, assistant, contact)
+ * using client-side React state synchronized seamlessly with URL query parameters.
+ * Incorporates real-time edge server telemetry HUD and bento project maps.
+ */
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
@@ -10,11 +17,7 @@ import CaseStudyOverlay from "@/features/projects/case-study-overlay";
 import IntellectNotebook from "@/features/notebook/intellect-notebook";
 import ChronoTrajectory from "@/features/timeline/chrono-trajectory";
 import VirtualColeAssistant from "@/features/assistant/virtual-cole-assistant";
-import { parseProjectSlug, type ProjectSlug } from "@/features/projects/domain/project-catalog";
-
-function isNavigationView(value: string | null): value is NavigationView {
-  return Boolean(value && (navigationViews as readonly string[]).includes(value));
-}
+import { isProjectSlug, type ProjectSlug } from "@/features/projects/domain/project-catalog";
 
 function isNavigationView(value: string | null): value is NavigationView {
   return Boolean(value && (navigationViews as readonly string[]).includes(value));
@@ -46,7 +49,8 @@ function PageContent() {
   const [selectedProjectSlug, setSelectedProjectSlug] = useState<ProjectSlug | null>(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      return parseProjectSlug(params.get("project"));
+      const projectParam = params.get("project");
+      return isProjectSlug(projectParam) ? projectParam : null;
     }
     return null;
   });
@@ -75,11 +79,10 @@ function PageContent() {
   };
 
   const handleProjectSelect = (slug: string) => {
-    const projectSlug = parseProjectSlug(slug);
-    if (!projectSlug) return;
+    if (!isProjectSlug(slug)) return;
 
-    setSelectedProjectSlug(projectSlug);
-    const newUrl = `${window.location.pathname}?view=dashboard&project=${projectSlug}`;
+    setSelectedProjectSlug(slug);
+    const newUrl = `${window.location.pathname}?view=dashboard&project=${slug}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
   };
 
@@ -240,35 +243,38 @@ function PageContent() {
                 <form className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Sender Name</label>
+                      <label htmlFor="form-sender-name" className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Sender Name</label>
                       <input 
+                        id="form-sender-name"
                         type="text" 
                         placeholder="John Doe" 
-                        className="w-full bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200"
+                        className="w-full bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0070F3] rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200"
                         required 
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Email Address</label>
+                      <label htmlFor="form-sender-email" className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Email Address</label>
                       <input 
+                        id="form-sender-email"
                         type="email" 
                         placeholder="john@organization.com" 
-                        className="w-full bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200"
+                        className="w-full bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0070F3] rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200"
                         required 
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Transmission Payload</label>
+                    <label htmlFor="form-payload" className="text-[10px] font-mono text-gray-500 font-semibold uppercase">Transmission Payload</label>
                     <textarea 
+                      id="form-payload"
                       placeholder="Discussing low-latency edge synchronizers..." 
-                      className="w-full min-h-[100px] bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200 resize-none"
+                      className="w-full min-h-[100px] bg-black/[0.01] border border-black/[0.08] focus:border-[#0070F3] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0070F3] rounded-xl px-3.5 py-2.5 text-xs font-sans transition-all duration-200 resize-none"
                       required
                     />
                   </div>
 
-                  <button className="w-full bg-[#111111] hover:bg-black text-white py-3 rounded-xl text-xs font-mono font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
+                  <button type="submit" className="w-full bg-[#111111] hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0070F3] text-white py-3 rounded-xl text-xs font-mono font-medium transition-colors shadow-sm flex items-center justify-center gap-2">
                     DISPATCH_MESSAGE
                   </button>
                 </form>
