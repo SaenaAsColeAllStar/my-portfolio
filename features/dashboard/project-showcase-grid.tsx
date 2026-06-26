@@ -67,7 +67,7 @@ export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcase
               id={`project-card-${project.slug}`}
               variants={cardVariants}
               onClick={() => onProjectSelect?.(project.slug)}
-              className={`group relative bg-white border border-black/[0.06] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-black/[0.12] transition-all duration-300 flex flex-col justify-between min-h-[250px] cursor-pointer ${project.accentColor}`}
+              className={`group relative bg-white border border-black/[0.06] rounded-2xl p-6 shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-lg hover:border-black/[0.12] transition-all duration-300 flex flex-col justify-between min-h-[250px] cursor-pointer ${accentClasses}`}
             >
               {/* Card top branding */}
               <div>

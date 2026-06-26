@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import type { ProjectSlug } from "./domain/project-catalog";
 import { 
   Clipboard, 
   Check, 
@@ -16,10 +17,10 @@ import {
 } from "lucide-react";
 
 interface EditorialNarrativeFrameProps {
-  projectSlug: string;
+  projectSlug: ProjectSlug;
 }
 
-const caseStudyNarratives: Record<string, {
+const caseStudyNarratives: Record<ProjectSlug, {
   category: string;
   title: string;
   subtitle: string;

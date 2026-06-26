@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { X, ArrowLeft, Terminal, Activity } from "lucide-react";
+import { useEffect } from "react";
+import { motion } from "motion/react";
+import { X, ArrowLeft, Activity } from "lucide-react";
 import SVGArchitectureViewer from "./svg-architecture-viewer";
 import EditorialNarrativeFrame from "./editorial-narrative-frame";
+import type { ProjectSlug } from "./domain/project-catalog";
 
 interface CaseStudyOverlayProps {
-  projectSlug: string;
+  projectSlug: ProjectSlug;
   onClose: () => void;
 }
 

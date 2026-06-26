@@ -13,7 +13,7 @@ import {
 import { getProjectArchitecture, type ArchitectureNode } from "@/features/projects/domain/project-catalog";
 
 interface SVGArchitectureViewerProps {
-  projectSlug: string;
+  projectSlug: ProjectSlug;
 }
 
 const iconMap = {
