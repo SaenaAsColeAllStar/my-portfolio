@@ -4,22 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:worker": "opennextjs-cloudflare build",
-    "start": "next start",
-    "lint": "eslint .",
-    "clean": "next clean",
-    "deploy": "npm run build:worker && wrangler deploy"
-  },
-  "dependencies": {
-    // ... your dependencies remain the same
-  }
-}{
-  "name": "my-portfolio",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
     "build": "opennextjs-cloudflare build",
     "start": "next start",
     "lint": "eslint .",
