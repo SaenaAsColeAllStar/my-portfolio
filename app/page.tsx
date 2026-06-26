@@ -3,7 +3,7 @@
 import { Suspense, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Activity, ArrowRight, Sparkles } from "lucide-react";
-import NavigationDock from "@/components/navigation-dock";
+import NavigationDock, { navigationViews, type NavigationView } from "@/components/navigation-dock";
 import NeuralSynapseCanvas from "@/features/dashboard/neural-synapse-canvas";
 import ProjectShowcaseGrid from "@/features/dashboard/project-showcase-grid";
 import CaseStudyOverlay from "@/features/projects/case-study-overlay";
@@ -11,12 +11,8 @@ import IntellectNotebook from "@/features/notebook/intellect-notebook";
 import ChronoTrajectory from "@/features/timeline/chrono-trajectory";
 import VirtualColeAssistant from "@/features/assistant/virtual-cole-assistant";
 
-type PortfolioView = "dashboard" | "notebook" | "timeline" | "assistant" | "contact";
-
-const portfolioViews = ["dashboard", "notebook", "timeline", "assistant", "contact"] as const;
-
-function isPortfolioView(value: string | null): value is PortfolioView {
-  return Boolean(value && (portfolioViews as readonly string[]).includes(value));
+function isNavigationView(value: string | null): value is NavigationView {
+  return Boolean(value && (navigationViews as readonly string[]).includes(value));
 }
 
 // Standard loading component for Suspense
@@ -32,11 +28,11 @@ function Loader() {
 }
 
 function PageContent() {
-  const [currentView, setCurrentView] = useState(() => {
+  const [currentView, setCurrentView] = useState<NavigationView>(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const viewParam = params.get("view");
-      if (isPortfolioView(viewParam)) {
+      if (isNavigationView(viewParam)) {
         return viewParam;
       }
     }
@@ -61,7 +57,7 @@ function PageContent() {
     }, 45);
   }, []);
 
-  const handleViewChange = (view: PortfolioView) => {
+  const handleViewChange = (view: NavigationView) => {
     setCurrentView(view);
     const newUrl = `${window.location.pathname}?view=${view}`;
     window.history.pushState({ path: newUrl }, "", newUrl);

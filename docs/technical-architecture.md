@@ -60,7 +60,8 @@ We avoid general, unstructured folder schemes like `/src/*` that mix concerns. C
 │       └── contact/              # Secure mailer relay
 ├── features/                     # Self-contained business domains
 │   ├── dashboard/                # Central grid layouts, Telemetry
-│   ├── projects/                 # Systems details, Interactive D3 Maps
+│   ├── projects/                 # Systems details, Interactive topology maps
+│   │   └── domain/               # Pure project catalog data, types, and lookup helpers
 │   ├── notebook/                 # Editorial reading components, essays
 │   ├── timeline/                 # ChronoTrajectory visual rails
 │   └── assistant/                # Intelligent terminal, chat mechanics
@@ -76,6 +77,11 @@ We avoid general, unstructured folder schemes like `/src/*` that mix concerns. C
 ```
 
 ---
+
+### 2.1 Feature Domain Modules
+- Feature-owned domain modules are allowed when a feature exposes reusable product knowledge to sibling UI surfaces. For example, `features/projects/domain/project-catalog.ts` owns project slugs, summaries, topology nodes, and lookup helpers used by both the dashboard grid and case-study viewer.
+- Domain modules must remain presentation-agnostic: no React components, icons, hooks, browser APIs, or styling logic. UI layers adapt semantic fields such as `iconKey` into visual components.
+- This keeps Cole.dev's Digital Mind content model testable and reusable without coupling business knowledge to a single visual treatment.
 
 ## 3. Deployment & CI/CD Pipeline
 

@@ -2,8 +2,14 @@
 
 import React from "react";
 import { motion, Variants } from "motion/react";
-import { ArrowUpRight, Zap } from "lucide-react";
-import { projectSummaries, type ProjectSlug } from "@/domain/portfolio/projects";
+import { ArrowUpRight, Cpu, Network, ShieldCheck, Zap } from "lucide-react";
+import { projectSummaries, type ProjectSlug, type ProjectSummary } from "@/features/projects/domain/project-catalog";
+
+const projectIconMap = {
+  cpu: Cpu,
+  network: Network,
+  shield: ShieldCheck,
+} satisfies Record<ProjectSummary["iconKey"], React.ComponentType<{ className?: string }>>;
 
 interface ProjectShowcaseGridProps {
   onProjectSelect?: (slug: ProjectSlug) => void;
@@ -54,7 +60,7 @@ export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcase
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {projectSummaries.map((project) => {
-          const IconComponent = project.icon;
+          const IconComponent = projectIconMap[project.iconKey];
           return (
             <motion.div
               key={project.id}
