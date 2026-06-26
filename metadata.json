@@ -1,0 +1,6 @@
+{
+  "name": "Cole.dev",
+  "description": "An immersive digital product representing the strategic thinking, system architecture, and cognitive design of a world-class AI Engineer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
