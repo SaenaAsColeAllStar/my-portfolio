@@ -2,62 +2,11 @@
 
 import React from "react";
 import { motion, Variants } from "motion/react";
-import { ArrowUpRight, Cpu, Network, ShieldCheck, Zap } from "lucide-react";
-
-export interface Project {
-  id: string;
-  slug: string;
-  category: string;
-  title: string;
-  description: string;
-  latencyMetric: string;
-  scaleMetric: string;
-  techStack: string[];
-  icon: React.ComponentType<{ className?: string }>;
-  accentColor: string;
-}
-
-const projects: Project[] = [
-  {
-    id: "proj_1",
-    slug: "distributed-cognitive-router",
-    category: "AI Routing Systems",
-    title: "Distributed Cognitive Semantic Router",
-    description: "Sub-40ms serverless inference gateway performing in-context query classification and local vector pre-routing. Eliminates redundant LLM compute cycles by intercepting repeated patterns directly at the edge boundary.",
-    latencyMetric: "38ms p95",
-    scaleMetric: "92% compute saved",
-    techStack: ["Cloudflare KV", "Gemini API", "Edge Isolates"],
-    icon: Cpu,
-    accentColor: "text-[#0070F3] bg-[#0070F3]/5 border-[#0070F3]/10 hover:shadow-[#0070F3]/5",
-  },
-  {
-    id: "proj_2",
-    slug: "global-event-log-sync",
-    category: "Database Engineering",
-    title: "Zero-Latency D1 Event Log Synchronizer",
-    description: "Distributed SQLite transactional synchronization scheme. Manages real-time write consolidation and edge audit trails with strict eventual consistency, avoiding centralized database contention bottlenecks.",
-    latencyMetric: "12ms Write Consolidation",
-    scaleMetric: "1.2M logs/sec Peak",
-    techStack: ["Cloudflare D1", "Drizzle ORM", "TypeScript"],
-    icon: Network,
-    accentColor: "text-amber-600 bg-amber-500/5 border-amber-500/10 hover:shadow-amber-500/5",
-  },
-  {
-    id: "proj_3",
-    slug: "boundary-shield-waf",
-    category: "Security & WAF",
-    title: "Boundary Shield Edge Firewall",
-    description: "High-throughput serverless Web Application Firewall screening dynamic telemetry streams for nested SQL injection or payload contamination. Runs compiled Rust WASM binary decoders directly in the Cloudflare request pipeline.",
-    latencyMetric: "1.8ms Overhead",
-    scaleMetric: "99.99% accuracy",
-    techStack: ["Rust WASM", "Cloudflare Workers", "RegEx Engines"],
-    icon: ShieldCheck,
-    accentColor: "text-purple-600 bg-purple-500/5 border-purple-500/10 hover:shadow-purple-500/5",
-  },
-];
+import { ArrowUpRight, Zap } from "lucide-react";
+import { projectSummaries, type ProjectSlug } from "@/domain/portfolio/projects";
 
 interface ProjectShowcaseGridProps {
-  onProjectSelect?: (slug: string) => void;
+  onProjectSelect?: (slug: ProjectSlug) => void;
 }
 
 export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcaseGridProps) {
@@ -104,7 +53,7 @@ export default function ProjectShowcaseGrid({ onProjectSelect }: ProjectShowcase
         animate="visible"
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
-        {projects.map((project) => {
+        {projectSummaries.map((project) => {
           const IconComponent = project.icon;
           return (
             <motion.div
