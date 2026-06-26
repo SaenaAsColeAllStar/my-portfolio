@@ -352,9 +352,9 @@ export default function VirtualColeAssistant({
 
   // Render Core Assistant Container
   const assistantConsole = (
-    <div className="bg-[#0D0D0D] text-[#E5E5E5] rounded-large border border-neutral-800 shadow-2xl flex flex-col h-[500px] overflow-hidden select-none">
+    <div className="bg-surface text-foreground rounded-large border border-border-strong shadow-2xl flex flex-col h-[500px] overflow-hidden select-none">
       {/* Console Header */}
-      <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-3 text-xs font-mono text-text-mute bg-neutral-950/40 select-none">
+      <div className="flex items-center justify-between border-b border-border-strong px-5 py-3 text-xs font-mono text-text-mute bg-surface-alt/40 select-none">
         <div className="flex items-center gap-2">
           <Brain className="w-4 h-4 text-gold" />
           <span className="font-semibold tracking-wider text-[10px]">VIRTUAL_COLE_CORE_V1.6</span>
@@ -364,13 +364,13 @@ export default function VirtualColeAssistant({
           {messages.length > 1 && (
             <button 
               onClick={handleClearHistory}
-              className="hover:text-red-400 p-0.5 border border-transparent hover:border-neutral-800 rounded transition-all cursor-pointer"
+              className="hover:text-red-500 p-0.5 border border-transparent hover:border-border-strong hover:bg-surface-alt rounded transition-all cursor-pointer"
               title="Reset Conversation"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
           )}
-          <div className="flex items-center gap-1.5 border-l border-neutral-800 pl-4">
+          <div className="flex items-center gap-1.5 border-l border-border-strong pl-4">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-[9px] text-emerald-500 uppercase font-semibold">Grounded</span>
           </div>
@@ -394,7 +394,7 @@ export default function VirtualColeAssistant({
               }`}
             >
               {/* Sender Tag */}
-              <span className="text-[8.5px] font-mono text-neutral-600 mb-1 tracking-wider uppercase font-bold select-none">
+              <span className="text-[8.5px] font-mono text-text-tech mb-1 tracking-wider uppercase font-bold select-none">
                 {m.role === "user" ? "visitor_query" : "virtual_cole"}
               </span>
 
@@ -402,8 +402,8 @@ export default function VirtualColeAssistant({
               <div
                 className={`p-3.5 rounded-large relative group ${
                   m.role === "user"
-                    ? "bg-gold/15 text-white rounded-tr-none border border-gold/25"
-                    : "bg-surface/45 border border-border-strong rounded-tl-none"
+                    ? "bg-gold/10 text-foreground rounded-tr-none border border-gold/30"
+                    : "bg-surface-alt border border-border-strong rounded-tl-none"
                 }`}
               >
                 {m.role === "user" ? (
@@ -416,7 +416,7 @@ export default function VirtualColeAssistant({
                 {m.role === "assistant" && m.content && (
                   <button 
                     onClick={() => handleCopyMessage(m.content)}
-                    className="absolute bottom-1 right-2 opacity-0 group-hover:opacity-100 p-1 bg-neutral-900 border border-neutral-800 hover:text-gold rounded transition-all cursor-pointer select-none"
+                    className="absolute bottom-1 right-2 opacity-0 group-hover:opacity-100 p-1 bg-surface border border-border-strong text-text-mute hover:text-gold rounded transition-all cursor-pointer select-none"
                     title="Copy Text"
                   >
                     <Copy className="w-3 h-3" />
@@ -434,10 +434,10 @@ export default function VirtualColeAssistant({
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-start max-w-[80%]"
           >
-            <span className="text-[8.5px] font-mono text-neutral-600 mb-1 uppercase font-bold">
+            <span className="text-[8.5px] font-mono text-text-tech mb-1 uppercase font-bold">
               virtual_cole
             </span>
-            <div className="bg-surface/45 border border-border-strong rounded-large rounded-tl-none p-3.5 flex items-center gap-3">
+            <div className="bg-surface-alt border border-border-strong rounded-large rounded-tl-none p-3.5 flex items-center gap-3">
               <Loader2 className="w-3.5 h-3.5 text-gold animate-spin" />
               <span className="text-[10px] font-mono text-text-mute animate-pulse">Running semantic inference pipelines...</span>
             </div>
@@ -449,16 +449,16 @@ export default function VirtualColeAssistant({
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="p-3 bg-red-950/20 border border-red-900/25 rounded-medium text-red-200 text-[11px] flex items-center gap-2 font-sans"
+            className="p-3 bg-red-500/10 dark:bg-red-950/20 border border-red-500/20 dark:border-red-900/25 rounded-medium text-red-600 dark:text-red-200 text-[11px] flex items-center gap-2 font-sans"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-red-400 animate-spin flex-shrink-0" />
+            <RefreshCw className="w-3.5 h-3.5 text-red-500 animate-spin flex-shrink-0" />
             <div className="flex-grow leading-tight">
-              <p className="font-semibold font-mono uppercase text-[8px] text-red-400 tracking-wider">Transmission Blocked</p>
-              <p className="text-neutral-400 text-[10.5px] mt-0.5">{error}</p>
+              <p className="font-semibold font-mono uppercase text-[8px] text-red-500 dark:text-red-400 tracking-wider">Transmission Blocked</p>
+              <p className="text-neutral-600 dark:text-neutral-400 text-[10.5px] mt-0.5">{error}</p>
             </div>
             <button
               onClick={() => handleSend(messages[messages.length - 1].content)}
-              className="px-2.5 py-1 bg-red-900/30 hover:bg-red-900/50 border border-red-800/20 rounded font-mono text-[9px] uppercase tracking-wider text-white transition-all cursor-pointer"
+              className="px-2.5 py-1 bg-red-500/20 dark:bg-red-900/30 hover:bg-red-500/30 dark:hover:bg-red-900/50 border border-red-500/10 dark:border-red-800/20 rounded font-mono text-[9px] uppercase tracking-wider text-red-700 dark:text-white transition-all cursor-pointer"
             >
               Retry
             </button>
@@ -475,9 +475,9 @@ export default function VirtualColeAssistant({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="px-5 pb-3.5 border-t border-neutral-900 pt-3.5 bg-neutral-950/40"
+            className="px-5 pb-3.5 border-t border-border-strong pt-3.5 bg-surface-alt/20"
           >
-            <p className="text-[8.5px] font-mono text-neutral-600 uppercase tracking-wider font-bold mb-2 flex items-center gap-1">
+            <p className="text-[8.5px] font-mono text-text-tech uppercase tracking-wider font-bold mb-2 flex items-center gap-1">
               <HelpCircle className="w-3.5 h-3.5 text-gold" />
               <span>Suggested Explorations:</span>
             </p>
@@ -486,7 +486,7 @@ export default function VirtualColeAssistant({
                 <button
                   key={i}
                   onClick={() => handleSend(sq.query)}
-                  className="p-2.5 bg-neutral-900/40 hover:bg-neutral-900 border border-neutral-800/80 rounded-medium text-left transition-all duration-150 cursor-pointer text-xs"
+                  className="p-2.5 bg-surface-alt/40 hover:bg-surface-alt border border-border-strong rounded-medium text-left transition-all duration-150 cursor-pointer text-xs text-foreground"
                 >
                   <p className="font-mono text-[9.5px] text-gold font-semibold truncate">{sq.label}</p>
                   <p className="text-[9.5px] text-text-mute truncate mt-0.5 font-sans">{sq.query}</p>
@@ -503,14 +503,14 @@ export default function VirtualColeAssistant({
           e.preventDefault();
           handleSend(input);
         }}
-        className="flex gap-2 border-t border-neutral-800 p-4 bg-neutral-950/40"
+        className="flex gap-2 border-t border-border-strong p-4 bg-surface-alt/20"
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={isLoading || isStreaming ? "Inference pipeline streaming..." : "Ask Virtual Cole about systems or biography..."}
-          className="flex-grow bg-[#0A0A0A] border border-neutral-800 rounded-medium px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-gold font-sans transition-colors placeholder-neutral-700 disabled:opacity-45"
+          className="flex-grow bg-background border border-border-strong rounded-medium px-4 py-2.5 text-xs text-foreground focus:outline-none focus:border-gold font-sans transition-colors placeholder-text-tech/60 disabled:opacity-45"
           disabled={isLoading || isStreaming}
         />
         <button

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "../src/shared/providers/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -49,8 +50,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} scroll-smooth`}
     >
-      <body className="font-sans antialiased bg-[#FAF9F6] text-[#111111]" suppressHydrationWarning>
-        {children}
+      <body className="font-sans antialiased bg-background text-foreground transition-colors duration-300" suppressHydrationWarning>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

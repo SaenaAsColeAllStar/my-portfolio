@@ -185,6 +185,62 @@ export class WorkersAIProvider implements AIModelProvider {
 }
 
 /**
+ * Local Grounded Mock AI Provider.
+ * Runs in local development when no API keys or bindings are resolved,
+ * preventing HTTP 500 errors and providing a zero-config demonstration of RAG capabilities.
+ */
+export class MockAIProvider implements AIModelProvider {
+  async generateStream(prompt: string, systemInstruction: string, history: Message[]): Promise<ReadableStream<string>> {
+    // Extract the grounded context from the system instruction
+    const contextStart = systemInstruction.indexOf("[GROUNDED CONTEXT]:");
+    let contextText = "";
+    if (contextStart !== -1) {
+      contextText = systemInstruction.substring(contextStart + 19).trim();
+    }
+
+    // Determine a response based on the query or the context
+    let responseText = "";
+    
+    if (!contextText || contextText.includes("No matching context found")) {
+      responseText = "I apologize, but that information is not available in my grounding database. I only answer questions about Cole's projects, experience, and system designs.";
+    } else {
+      // Parse the context to synthesize a simulated answer
+      // Find the first source title, summary, and slug
+      const sourceMatch = contextText.match(/Title:\s*(.+)\nSummary:\s*(.+)/);
+      const slugMatch = contextText.match(/Slug:\s*([^\s\n]+)/);
+      
+      if (sourceMatch && slugMatch) {
+        const title = sourceMatch[1].trim();
+        const summary = sourceMatch[2].trim();
+        const slug = slugMatch[1].trim();
+        
+        responseText = `Based on my grounded knowledge base, let's discuss **${title}**.\n\n${summary}\n\nThis system is implemented using Cole's technical stack, optimizing edge routing and caching pipelines to deliver low latency. [Project: ${slug}]\n\n*(Note: Running in local simulation mode. Configure \`GEMINI_API_KEY\` in your \`.env.local\` to activate the live Gemini reasoning engine.)*`;
+      } else {
+        responseText = `Based on my grounded knowledge base, I found relevant information regarding your query:\n\n${contextText.substring(0, 250)}...\n\n*(Note: Running in local simulation mode. Configure \`GEMINI_API_KEY\` in your \`.env.local\` to activate the live Gemini reasoning engine.)*`;
+      }
+    }
+
+    const words = responseText.split(" ");
+    
+    return new ReadableStream({
+      async start(controller) {
+        for (const word of words) {
+          controller.enqueue(word + " ");
+          // Simulate streaming typing speed (40ms per word)
+          await new Promise(resolve => setTimeout(resolve, 40));
+        }
+        controller.close();
+      }
+    });
+  }
+
+  async generateEmbeddings(text: string): Promise<number[]> {
+    // Return a dummy 384-dimension vector for local SQLite keyword matching
+    return new Array(384).fill(0).map(() => Math.random());
+  }
+}
+
+/**
  * Smart Factory Resolver returning the active AI provider based on environmental variables.
  */
 export function getAIProvider(env: any = {}): AIModelProvider {
@@ -198,5 +254,7 @@ export function getAIProvider(env: any = {}): AIModelProvider {
     return new WorkersAIProvider(workersAIBinding);
   }
 
-  throw new Error("No active AI Provider could be resolved. Bind GEMINI_API_KEY or Cloudflare Workers AI.");
+  // Fall back to MockAIProvider in local development instead of throwing
+  console.warn("[CMS-AI] No active AI Provider resolved. Falling back to MockAIProvider for local simulation.");
+  return new MockAIProvider();
 }
