@@ -1,0 +1,376 @@
+/**
+ * Cole.dev World-Class Design System, Visual Language, and Token System.
+ * Engineered using Tailwind CSS v4 custom properties.
+ * Designed to feel like a premium editorial catalog combined with scientific visualization.
+ */
+
+:root {
+  /* ── 1. COLOR SYSTEM (PURE WHITE HIGH CONTRAST & TECHNICAL ACCENTS) ── */
+  /* Neutral Canvas & Surfaces */
+  --bg-canvas-light: #FFFFFF;
+  --bg-surface-light: #FAF9F6;      /* Warm bone white */
+  --bg-surface-alt-light: #F2F1EC;  /* Slightly deeper warm gray */
+  --text-primary-light: #111111;    /* Deep graphite */
+  --text-secondary-light: #6B6A65;  /* Muted slate */
+  --text-tertiary-light: #A09F9A;   /* Technical caption gray */
+
+  /* Borders & Dividers */
+  --border-mute-light: rgba(17, 17, 16, 0.05);
+  --border-strong-light: rgba(17, 17, 16, 0.12);
+  --border-focus-light: rgba(17, 17, 16, 0.4);
+
+  /* Glassmorphism Primitives */
+  --glass-bg-light: rgba(255, 255, 255, 0.75);
+  --glass-border-light: rgba(17, 17, 16, 0.06);
+
+  /* Dark Mode Equivalents (Carbon & Obsidian Void) */
+  --bg-canvas-dark: #000000;
+  --bg-surface-dark: #0A0A0A;
+  --bg-surface-alt-dark: #121212;
+  --text-primary-dark: #FFFFFF;
+  --text-secondary-dark: #9A9996;
+  --text-tertiary-dark: #5C5B57;
+
+  --border-mute-dark: rgba(255, 255, 255, 0.04);
+  --border-strong-dark: rgba(255, 255, 255, 0.09);
+  --border-focus-dark: rgba(255, 255, 255, 0.4);
+
+  --glass-bg-dark: rgba(10, 10, 10, 0.75);
+  --glass-border-dark: rgba(255, 255, 255, 0.05);
+
+  /* Functional Accents (High Contrast Technical Palette) */
+  --accent-primary: #D4AF37;         /* Luxury Amber / Cyber Gold */
+  --accent-primary-glow: rgba(212, 175, 55, 0.15);
+
+  --color-success: #00875A;         /* High-contrast Emerald */
+  --color-warning: #DE350B;         /* Vivid Ochre / Orange */
+  --color-danger: #E01E5A;          /* Crimson Red */
+  --color-info: #0052CC;            /* Cobalt Blue */
+  --color-selection: rgba(212, 175, 55, 0.12);
+
+  /* Charts & Scientific Diagrams (Drawn Blueprint Aesthetics) */
+  --chart-line-1: #111111;
+  --chart-line-2: #6B6A65;
+  --chart-fill-1: rgba(17, 17, 16, 0.02);
+  --chart-grid: rgba(17, 17, 16, 0.04);
+
+  /* ── 2. SHADOW SYSTEM (ELEVATION LEVELS & FLOATING LAYERS) ── */
+  --shadow-flat: none;
+  --shadow-sm: 0 1px 2px rgba(17, 17, 16, 0.01), 0 2px 8px rgba(17, 17, 16, 0.01);
+  --shadow-md: 0 4px 16px -2px rgba(17, 17, 16, 0.02), 0 8px 24px -4px rgba(17, 17, 16, 0.02);
+  --shadow-lg: 0 8px 32px -6px rgba(17, 17, 16, 0.03), 0 16px 48px -8px rgba(17, 17, 16, 0.03);
+  --shadow-xl: 0 16px 48px -12px rgba(17, 17, 16, 0.05), 0 32px 80px -16px rgba(17, 17, 16, 0.04);
+
+  /* ── 3. BORDER RADIUS SYSTEM ── */
+  --radius-tiny: 3px;     /* Small badges, checkmarks */
+  --radius-small: 6px;    /* Code blocks, input elements */
+  --radius-medium: 10px;  /* Buttons, standard card outlines */
+  --radius-large: 16px;   /* Layout panels, bento units */
+  --radius-xlarge: 28px;  /* Large dialog boxes, page overlays */
+  --radius-full: 9999px;  /* Pill elements, navigation docks */
+
+  /* ── 4. MOTION & TRANSITION TOKENS ── */
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);  /* Snappy elastic ease-out */
+  --ease-fluid: cubic-bezier(0.22, 1, 0.36, 1);  /* Natural decelerate */
+  --ease-linear: cubic-bezier(0, 0, 1, 1);
+  
+  --duration-instant: 0.1s;
+  --duration-fast: 0.2s;
+  --duration-medium: 0.4s;
+  --duration-slow: 0.7s;
+  --duration-languid: 1.2s;
+
+  /* ── 5. SPATIAL LAYOUT & Z-INDEX STRATEGY ── */
+  --z-base: 1;
+  --z-card-hover: 10;
+  --z-navbar: 50;
+  --z-overlay: 100;
+  --z-tooltip: 200;
+  --z-cursor: 999;
+}
+
+/* ── DYNAMIC COLOR BINDINGS ── */
+:root {
+  --background: var(--bg-canvas-light);
+  --foreground: var(--text-primary-light);
+  --surface: var(--bg-surface-light);
+  --surface-alt: var(--bg-surface-alt-light);
+  
+  --text-mute: var(--text-secondary-light);
+  --text-technical: var(--text-tertiary-light);
+
+  --border-mute: var(--border-mute-light);
+  --border-strong: var(--border-strong-light);
+  --border-focus: var(--border-focus-light);
+
+  --glass-bg: var(--glass-bg-light);
+  --glass-border: var(--glass-border-light);
+  
+  --shadow-elevation-1: var(--shadow-sm);
+  --shadow-elevation-2: var(--shadow-md);
+  --shadow-elevation-3: var(--shadow-lg);
+  --shadow-elevation-4: var(--shadow-xl);
+}
+
+.dark {
+  --background: var(--bg-canvas-dark);
+  --foreground: var(--text-primary-dark);
+  --surface: var(--bg-surface-dark);
+  --surface-alt: var(--bg-surface-alt-dark);
+
+  --text-mute: var(--text-secondary-dark);
+  --text-technical: var(--text-tertiary-dark);
+
+  --border-mute: var(--border-mute-dark);
+  --border-strong: var(--border-strong-dark);
+  --border-focus: var(--border-focus-dark);
+
+  --glass-bg: var(--glass-bg-dark);
+  --glass-border: var(--glass-border-dark);
+
+  --shadow-elevation-1: var(--shadow-sm);
+  --shadow-elevation-2: var(--shadow-md);
+  --shadow-elevation-3: var(--shadow-lg);
+  --shadow-elevation-4: var(--shadow-xl);
+  
+  --chart-line-1: #FFFFFF;
+  --chart-line-2: #9A9996;
+  --chart-fill-1: rgba(255, 255, 255, 0.02);
+  --chart-grid: rgba(255, 255, 255, 0.04);
+}
+
+/* ── TAILWIND V4 INTEGRATION LAYER ── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  
+  --color-text-mute: var(--text-mute);
+  --color-text-tech: var(--text-technical);
+  
+  --color-border-mute: var(--border-mute);
+  --color-border-strong: var(--border-strong);
+  
+  --color-gold: var(--accent-primary);
+  
+  /* Font Family Overrides */
+  --font-sans: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Fira Code", "SF Mono", Menlo, Monaco, monospace;
+
+  /* Spacing Scale (Nested Layout Grid Alignment) */
+  --spacing-grid-gap: 24px;
+  --spacing-grid-padding: 32px;
+
+  /* Elevation Shadows */
+  --shadow-premium-1: var(--shadow-elevation-1);
+  --shadow-premium-2: var(--shadow-elevation-2);
+  --shadow-premium-3: var(--shadow-elevation-3);
+  --shadow-premium-4: var(--shadow-elevation-4);
+
+  /* Border Radiuses */
+  --radius-tiny: var(--radius-tiny);
+  --radius-small: var(--radius-small);
+  --radius-medium: var(--radius-medium);
+  --radius-large: var(--radius-large);
+  --radius-xlarge: var(--radius-xlarge);
+}
+
+/* ── 6. TYPOGRAPHY SYSTEM (EDITORIAL HIGH-CONTRAST SCALE) ── */
+.text-hero {
+  font-family: var(--font-sans);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+
+.text-section-header {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+.text-title-major {
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+}
+
+.text-heading-technical {
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.text-subheading-technical {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.text-editorial-body {
+  font-family: var(--font-sans);
+  font-size: 0.96875rem;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+  max-width: 68ch; /* Optimal reading line-width */
+}
+
+.text-technical-caption {
+  font-family: var(--font-sans);
+  font-size: 0.78125rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+}
+
+.text-code-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* ── 7. RESPONSIVE CUSTOM GRID SYSTEM (ENGINEERING LAYOUTS) ── */
+.canvas-dot-matrix {
+  background-size: 20px 20px;
+  background-image: radial-gradient(circle, var(--border-strong) 0.75px, transparent 0.75px);
+}
+
+.blueprint-grid-canvas {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, var(--border-mute) 0.75px, transparent 0.75px),
+    linear-gradient(to bottom, var(--border-mute) 0.75px, transparent 0.75px);
+}
+
+.engineering-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-grid-gap);
+}
+
+@media (min-width: 768px) {
+  .engineering-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .engineering-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+@media (min-width: 1920px) {
+  .engineering-grid {
+    grid-template-columns: repeat(16, 1fr);
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ── 8. MICRO INTERACTIVE CLASSES ── */
+.premium-glass-card {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-elevation-1);
+  border-radius: var(--radius-large);
+  transition: 
+    background-color var(--duration-fast) var(--ease-fluid),
+    border-color var(--duration-fast) var(--ease-fluid),
+    box-shadow var(--duration-fast) var(--ease-fluid),
+    transform var(--duration-medium) var(--ease-snappy);
+}
+
+.premium-glass-card-interactive:hover {
+  transform: translateY(-3px) scale(1.005);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-elevation-2);
+}
+
+::selection {
+  background-color: var(--color-selection);
+  color: inherit;
+}
+
+/* ── 9. DIAGRAMS & CODE BLOCKS (OBSIDIAN & TECHNICAL STYLE) ── */
+.obsidian-code-window {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  box-shadow: var(--shadow-elevation-1);
+  overflow: hidden;
+}
+
+.obsidian-code-header {
+  height: 32px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border-mute);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.technical-schema-svg {
+  background-color: var(--background);
+  border: 1px solid var(--border-mute);
+  border-radius: var(--radius-large);
+  padding: 24px;
+  box-shadow: var(--shadow-elevation-1);
+}
+
+.technical-schema-svg rect,
+.technical-schema-svg path,
+.technical-schema-svg circle {
+  stroke: var(--foreground);
+  stroke-width: 1px;
+}
+
+.technical-schema-svg text {
+  fill: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+  }
+}

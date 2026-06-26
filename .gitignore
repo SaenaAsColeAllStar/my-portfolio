@@ -5,3 +5,7 @@ coverage/
 *.log
 .env*
 !.env.example
+.open-next/
+tsconfig.tsbuildinfo
+src/shared/lib/storage/cms.db
+src/shared/lib/storage/cms.db-*

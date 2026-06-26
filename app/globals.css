@@ -1,44 +1,4 @@
 @import "tailwindcss";
+@import "../src/shared/styles/design-system.css";
 
-@theme {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), "Space Grotesk", sans-serif;
-  --font-mono: var(--font-mono), monospace;
-
-  --color-cream: #FAF9F6;
-  --color-charcoal: #111111;
-  --color-slate-gray: #4A5568;
-  --color-accent-blue: #0070F3;
-  --color-border-light: #E2E8F0;
-}
-
-/* Custom visual scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
-}
-
-/* Highlight style */
-::selection {
-  background-color: rgba(0, 112, 243, 0.1);
-  color: #0070F3;
-}
-
-/* Smooth active spring properties */
-.spring-interactive {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
+/* Global overrides or page-specific entry styling */

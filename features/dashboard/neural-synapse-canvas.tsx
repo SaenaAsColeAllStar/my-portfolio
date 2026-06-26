@@ -109,7 +109,7 @@ export default function NeuralSynapseCanvas() {
         }
       }
 
-      // Draw Cursor-to-Node Gravity Connections
+      // Draw Cursor-to-Node Gravity Connections & Physics
       if (mouse.x !== null && mouse.y !== null && !isReducedMotion) {
         for (let i = 0; i < nodes.length; i++) {
           const dx = nodes[i].x - mouse.x;
@@ -117,6 +117,7 @@ export default function NeuralSynapseCanvas() {
           const dist = Math.hypot(dx, dy);
 
           if (dist < 180) {
+            // Draw connection line
             const alpha = (1 - dist / 180) * 0.15;
             ctx.strokeStyle = `rgba(0, 112, 243, ${alpha})`;
             ctx.lineWidth = 0.75;
@@ -125,26 +126,60 @@ export default function NeuralSynapseCanvas() {
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
 
-            // Gentle gravity pull toward cursor
-            const force = (180 - dist) * 0.0003;
-            nodes[i].vx -= dx * force;
-            nodes[i].vy -= dy * force;
+            // Physics: Gravity pull at outer boundary, strong magnetic push at inner boundary
+            if (dist > 60) {
+              // Gentle pull toward cursor
+              const force = (180 - dist) * 0.00025;
+              nodes[i].vx -= dx * force;
+              nodes[i].vy -= dy * force;
+            } else if (dist > 0) {
+              // Snappy push away from cursor to prevent clumping
+              const force = (60 - dist) * 0.0015;
+              nodes[i].vx += dx * force;
+              nodes[i].vy += dy * force;
+            }
           }
         }
       }
 
       // Render Nodes & Update Physics
       nodes.forEach((node) => {
-        // Draw elegant glowing node
+        // Calculate interactive scale and color blend based on cursor proximity
+        let activeScale = 1;
+        let isNearCursor = false;
+        let colorProgress = 0;
+
+        if (mouse.x !== null && mouse.y !== null && !isReducedMotion) {
+          const dx = node.x - mouse.x;
+          const dy = node.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 150) {
+            isNearCursor = true;
+            colorProgress = 1 - dist / 150;
+            activeScale = 1 + colorProgress * 0.6; // Scale up to 1.6x
+          }
+        }
+
+        const currentRadius = node.radius * activeScale;
+
+        // Draw elegant glowing outer halo (blends from blue to gold near cursor)
         ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0, 112, 243, 0.4)";
+        ctx.arc(node.x, node.y, currentRadius, 0, Math.PI * 2);
+        if (isNearCursor) {
+          ctx.fillStyle = `rgba(${Math.round(0 * (1 - colorProgress) + 212 * colorProgress)}, ${Math.round(112 * (1 - colorProgress) + 175 * colorProgress)}, ${Math.round(243 * (1 - colorProgress) + 55 * colorProgress)}, ${0.4 + colorProgress * 0.1})`;
+        } else {
+          ctx.fillStyle = "rgba(0, 112, 243, 0.4)";
+        }
         ctx.fill();
 
-        // Core dot
+        // Core dot (solid blue to solid gold near cursor)
         ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = "#0070F3";
+        ctx.arc(node.x, node.y, currentRadius * 0.4, 0, Math.PI * 2);
+        if (isNearCursor) {
+          ctx.fillStyle = `rgb(${Math.round(0 * (1 - colorProgress) + 212 * colorProgress)}, ${Math.round(112 * (1 - colorProgress) + 175 * colorProgress)}, ${Math.round(243 * (1 - colorProgress) + 55 * colorProgress)})`;
+        } else {
+          ctx.fillStyle = "#0070F3";
+        }
         ctx.fill();
 
         if (!isReducedMotion) {
