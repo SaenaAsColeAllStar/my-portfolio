@@ -3,16 +3,20 @@
 import { motion } from "motion/react";
 import { Layers, BookOpen, CalendarDays, Brain, Mail } from "lucide-react";
 
+export const navigationViews = ["dashboard", "notebook", "timeline", "assistant", "contact"] as const;
+
+export type NavigationView = (typeof navigationViews)[number];
+
 interface NavigationDockProps {
-  currentView: string;
-  onViewChange: (view: string) => void;
+  currentView: NavigationView;
+  onViewChange: (view: NavigationView) => void;
 }
 
 export default function NavigationDock({
   currentView,
   onViewChange,
 }: NavigationDockProps) {
-  const items = [
+  const items: Array<{ id: NavigationView; label: string; icon: typeof Layers; description: string }> = [
     {
       id: "dashboard",
       label: "Systems",
