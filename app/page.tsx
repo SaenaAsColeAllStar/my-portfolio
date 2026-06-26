@@ -2,27 +2,19 @@
 
 import { Suspense, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Terminal, 
-  Sparkles, 
-  ArrowRight, 
-  Layers, 
-  CalendarDays, 
-  Brain, 
-  Mail,
-  ArrowUpRight,
-  Shield,
-  Activity,
-  ChevronRight,
-  Code
-} from "lucide-react";
-import NavigationDock from "@/components/navigation-dock";
+import { Activity, ArrowRight, Sparkles } from "lucide-react";
+import NavigationDock, { navigationViews, type NavigationView } from "@/components/navigation-dock";
 import NeuralSynapseCanvas from "@/features/dashboard/neural-synapse-canvas";
 import ProjectShowcaseGrid from "@/features/dashboard/project-showcase-grid";
 import CaseStudyOverlay from "@/features/projects/case-study-overlay";
 import IntellectNotebook from "@/features/notebook/intellect-notebook";
 import ChronoTrajectory from "@/features/timeline/chrono-trajectory";
 import VirtualColeAssistant from "@/features/assistant/virtual-cole-assistant";
+import { parseProjectSlug, type ProjectSlug } from "@/features/projects/domain/project-catalog";
+
+function isNavigationView(value: string | null): value is NavigationView {
+  return Boolean(value && (navigationViews as readonly string[]).includes(value));
+}
 
 // Standard loading component for Suspense
 function Loader() {
@@ -37,20 +29,20 @@ function Loader() {
 }
 
 function PageContent() {
-  const [currentView, setCurrentView] = useState(() => {
+  const [currentView, setCurrentView] = useState<NavigationView>(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const viewParam = params.get("view");
-      if (viewParam && ["dashboard", "notebook", "timeline", "assistant", "contact"].includes(viewParam)) {
+      if (isNavigationView(viewParam)) {
         return viewParam;
       }
     }
     return "dashboard";
   });
-  const [selectedProjectSlug, setSelectedProjectSlug] = useState<string | null>(() => {
+  const [selectedProjectSlug, setSelectedProjectSlug] = useState<ProjectSlug | null>(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      return params.get("project");
+      return parseProjectSlug(params.get("project"));
     }
     return null;
   });
@@ -66,7 +58,7 @@ function PageContent() {
     }, 45);
   }, []);
 
-  const handleViewChange = (view: string) => {
+  const handleViewChange = (view: NavigationView) => {
     setCurrentView(view);
     const newUrl = `${window.location.pathname}?view=${view}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
@@ -75,6 +67,15 @@ function PageContent() {
   const handleCloseProject = () => {
     setSelectedProjectSlug(null);
     const newUrl = `${window.location.pathname}?view=${currentView}`;
+    window.history.pushState({ path: newUrl }, "", newUrl);
+  };
+
+  const handleProjectSelect = (slug: string) => {
+    const projectSlug = parseProjectSlug(slug);
+    if (!projectSlug) return;
+
+    setSelectedProjectSlug(projectSlug);
+    const newUrl = `${window.location.pathname}?view=dashboard&project=${projectSlug}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
   };
 
@@ -157,11 +158,7 @@ function PageContent() {
 
               {/* Project Showcase Grid */}
               <ProjectShowcaseGrid 
-                onProjectSelect={(slug) => {
-                  setSelectedProjectSlug(slug);
-                  const newUrl = `${window.location.pathname}?view=dashboard&project=${slug}`;
-                  window.history.pushState({ path: newUrl }, "", newUrl);
-                }}
+                onProjectSelect={handleProjectSelect}
               />
             </motion.div>
           )}
@@ -189,11 +186,7 @@ function PageContent() {
               className="w-full"
             >
               <ChronoTrajectory 
-                onProjectSelect={(slug) => {
-                  setSelectedProjectSlug(slug);
-                  const newUrl = `${window.location.pathname}?view=dashboard&project=${slug}`;
-                  window.history.pushState({ path: newUrl }, "", newUrl);
-                }} 
+                onProjectSelect={handleProjectSelect}
               />
             </motion.div>
           )}
@@ -216,11 +209,7 @@ function PageContent() {
               </div>
 
               <VirtualColeAssistant 
-                onProjectSelect={(slug) => {
-                  setSelectedProjectSlug(slug);
-                  const newUrl = `${window.location.pathname}?view=dashboard&project=${slug}`;
-                  window.history.pushState({ path: newUrl }, "", newUrl);
-                }}
+                onProjectSelect={handleProjectSelect}
               />
             </motion.div>
           )}
