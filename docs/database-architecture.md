@@ -35,6 +35,25 @@ To achieve sub-millisecond page rendering and native server-side edge execution,
 
 ---
 
+### 1.1 Deployed Cloudflare Production Resources
+
+To map these design principles into operational cloud hardware, the following active edge infrastructure has been provisioned under the `my-portfolio` scope:
+
+*   **D1 SQLite Database (Relational SQL Tier):**
+    *   **Binding Name:** `DB`
+    *   **Database Name:** `coleallstar`
+    *   **Database ID:** `3514bbc0-c632-477b-b14e-7133413a567f`
+*   **Cloudflare KV (Caching & AI Grounding Tier):**
+    *   **Binding Name:** `KV_BINDING`
+    *   **Namespace ID:** `036ba3dbe36a4f84b5c98a6e221ec327`
+*   **Cloudflare R2 Object Storage (Blob Tier):**
+    *   **Bucket Name:** `coleallstar`
+    *   **S3 API Endpoint:** `https://c0ed6ab96bc27307522c11a6f62506fe.r2.cloudflarestorage.com/coleallstar`
+*   **Observability & Telemetry Config:**
+    *   **Traces & Logs:** Persisted at a 100% head sampling rate for active performance profiling and invocation auditing without performance penalty.
+
+---
+
 ## 2. Relational Entity-Relationship (ER) Schema
 
 Below are the architectural definitions of the primary SQL relational tables, fully designed for type safety with **TypeScript / Drizzle ORM**.
