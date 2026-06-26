@@ -2,6 +2,9 @@
   "name": "my-portfolio",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "node scripts/compile-docs.js && next dev",
     "build": "node scripts/compile-docs.js && next build",
@@ -19,25 +22,27 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.553.0",
     "motion": "^12.23.24",
-    "next": "^15.4.9",
-    "postcss": "^8.5.6",
+    "next": "^15.5.19",
+    "postcss": "^8.5.10",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.20.0",
-    "@tailwindcss/postcss": "4.1.11",
+    "@tailwindcss/postcss": "^4.3.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^20",
+    "@types/node": "^22.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "9.39.1",
-    "eslint-config-next": "16.0.8",
-    "firebase-tools": "^15.0.0",
-    "tailwindcss": "4.1.11",
+    "eslint": "^9.21.0",
+    "eslint-config-next": "^16.2.9",
+    "tailwindcss": "^4.3.1",
     "tw-animate-css": "^1.4.0",
-    "typescript": "5.9.3",
-    "wrangler": "^3.0.0"
+    "typescript": "^5.7.3",
+    "wrangler": "^4.105.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   }
 }

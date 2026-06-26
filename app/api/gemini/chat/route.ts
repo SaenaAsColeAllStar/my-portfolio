@@ -2,8 +2,6 @@ import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import docsContextJson from "@/lib/docs-context.json";
 
-export const runtime = "edge";
-
 // Lazy-initialized GoogleGenAI SDK client
 let aiClient: GoogleGenAI | null = null;
 
